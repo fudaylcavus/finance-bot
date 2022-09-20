@@ -1,0 +1,26 @@
+{
+  "name": "finance-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "ts-node-dev --respawn src/server.ts",
+    "test": "jest"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^29.0.3",
+    "ts-node-dev": "^2.0.0"
+  },
+  "dependencies": {
+    "@discordjs/builders": "^1.2.0",
+    "@discordjs/rest": "^1.1.0",
+    "axios": "^0.27.2",
+    "chai": "^4.3.6",
+    "cheerio": "^1.0.0-rc.12",
+    "discord.js": "^14.3.0",
+    "dotenv": "^16.0.2",
+    "mongoose": "^6.6.0"
+  }
+}
