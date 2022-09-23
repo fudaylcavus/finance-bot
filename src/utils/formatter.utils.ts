@@ -10,9 +10,8 @@ export function toNumber(amount: string): number {
     return Number(amountWithDeletedDots.replace(/,/gi, "."));
 }
 
-
 export function toCurrency(amount: number): string {
-    console.log(amount)
+    console.log(amount);
     let amountString = amount.toString();
     let amountArray = amountString.split(".");
     let amountInteger = amountArray[0];
@@ -22,7 +21,6 @@ export function toCurrency(amount: number): string {
     let amountIntegerArrayReversedWithDots = [];
     for (let i = 0; i < amountIntegerArrayReversed.length; i++) {
         if (i % 3 == 0 && i != 0) {
-
             amountIntegerArrayReversedWithDots.push(".");
         }
         amountIntegerArrayReversedWithDots.push(amountIntegerArrayReversed[i]);
@@ -33,9 +31,5 @@ export function toCurrency(amount: number): string {
     let amountWithDots = amountIntegerWithDots + "," + amountDecimal;
     return amountWithDots;
 }
-
-
-
-
 
 export const toObjectId = (id: string) => new Types.ObjectId(id);

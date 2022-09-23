@@ -4,7 +4,6 @@ import { CompanyType } from "../definitions/type.definitions";
 import Subscriber from "../models/subscriber.model";
 import { handleSubscribe, handleUnsubscribe } from "../utils/db.utils";
 
-
 describe("handleSubscribe Function", () => {
     beforeAll(async () => {
         await mongoose
@@ -130,7 +129,7 @@ describe("handleUnsubscribe Function", () => {
                 expect(result).toBe(true);
             })
             .catch((err) => {
-                expect(err).toBeUndefined()
+                expect(err).toBeUndefined();
             });
     });
 

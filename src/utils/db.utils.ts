@@ -37,7 +37,6 @@ export const handleSubscribe = async (interaction: SubscriberInteraction, compan
 };
 
 export const handleUnsubscribe = async (interaction: SubscriberInteraction, companyName: string) => {
-
     const requestedCompany = await Company.findOne({ name: companyName });
     if (!requestedCompany) {
         throw new CompanyNotFoundError("Company not found!");
@@ -55,8 +54,7 @@ export const handleUnsubscribe = async (interaction: SubscriberInteraction, comp
             throw new NotSubscribedError("Not subscribed to company!");
         }
     }
-}
-
+};
 
 export const getCompany = async (companyName: string) => {
     const requestedCompany = await Company.findOne({ name: companyName });
@@ -65,18 +63,17 @@ export const getCompany = async (companyName: string) => {
     } else {
         return requestedCompany;
     }
-}
+};
 
 export const getAllSubscribersOfCompany = async (companyName: string) => {
     const requestedCompany = await Company.findOne({ name: companyName });
     if (!requestedCompany) {
         throw new CompanyNotFoundError("Company not found!");
     } else {
-        const subscribers = await Subscriber.find({ subscribedCompanies: { $in : requestedCompany._id} });
+        const subscribers = await Subscriber.find({ subscribedCompanies: { $in: requestedCompany._id } });
         return subscribers;
     }
-}
-
+};
 
 //update company
 export const updateCompany = async (companyName: string, companyData: CompanyType) => {
@@ -93,4 +90,4 @@ export const updateCompany = async (companyName: string, companyData: CompanyTyp
         await requestedCompany.save();
         return requestedCompany;
     }
-}
+};

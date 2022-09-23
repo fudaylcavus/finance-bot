@@ -1,7 +1,6 @@
 import { CompanyType } from "../definitions/type.definitions";
 import Company from "../models/company.model";
 
-
 export async function isNewSuggestion(companyName: string, companiesData: CompanyType[]) {
     //check if companies data has different suggestion date for same copmany
     //if it has, return true

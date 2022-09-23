@@ -5,7 +5,6 @@ export class CompanyNotFoundError extends Error {
     }
 }
 
-
 export class AlreadySubscribedError extends Error {
     constructor(message: string) {
         super(message);

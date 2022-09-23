@@ -3,8 +3,7 @@ import cheerio from "cheerio";
 import { CompanyType } from "../definitions/type.definitions";
 import { toNumber, toDate } from "./formatter.utils";
 
-const URL =
-    "https://www.isyatirim.com.tr/tr-tr/analiz/hisse/Sayfalar/takip-listesi.aspx";
+const URL = "https://www.isyatirim.com.tr/tr-tr/analiz/hisse/Sayfalar/takip-listesi.aspx";
 
 async function getHTMLContent(url: string) {
     const siteData = await axios.get<string, AxiosResponse<string>>(url);
@@ -23,16 +22,10 @@ function getCompaniesByHtmlContent(htmlContent: string): CompanyType[] {
         const company: CompanyType = {
             name: $(this).children("td").eq(0).text(),
             suggestion: $(this).children("td").eq(1).text(),
-            expectedValue: toNumber(
-                $(this).children("td").eq(2).text()
-            ),
-            potentialIncome: toNumber(
-                $(this).children("td").eq(3).text()
-            ),
+            expectedValue: toNumber($(this).children("td").eq(2).text()),
+            potentialIncome: toNumber($(this).children("td").eq(3).text()),
             suggestionDate: toDate($(this).children("td").eq(4).text()),
-            currentValue: toNumber(
-                $(this).children("td").eq(5).text()
-            ),
+            currentValue: toNumber($(this).children("td").eq(5).text()),
             marketValue: toNumber($(this).children("td").eq(6).text()),
         };
 
@@ -46,10 +39,7 @@ export async function getCompanies(): Promise<CompanyType[]> {
     return getCompaniesByHtmlContent(await getHTMLContent(URL));
 }
 
-export function getCompanyInformation(
-    companies: CompanyType[],
-    companyName: string
-): CompanyType | undefined {
+export function getCompanyInformation(companies: CompanyType[], companyName: string): CompanyType | undefined {
     return companies.find((company) => {
         return company.name.toLowerCase() === companyName.toLowerCase();
     });
