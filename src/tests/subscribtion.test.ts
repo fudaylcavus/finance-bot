@@ -3,11 +3,19 @@ import { describe, expect, test, beforeAll, afterAll } from "@jest/globals";
 import { CompanyType } from "../definitions/type.definitions";
 import Subscriber from "../models/subscriber.model";
 import { handleSubscribe, handleUnsubscribe } from "../utils/db.utils";
+import dotenv from "dotenv";
+dotenv.config();
+
+// ensure env variables are defined
+if (!process.env.MONGO_CONNECTION_STRING) {
+    console.error("MONGO_CONNECTION_STRING is not defined");
+    throw new Error("MONGO_CONNECTION_STRING is not defined");
+}
 
 describe("handleSubscribe Function", () => {
     beforeAll(async () => {
         await mongoose
-            .connect("mongodb+srv://exdet:financebot@cluster0.zggrcsg.mongodb.net/?retryWrites=true&w=majority")
+            .connect(process.env.MONGO_CONNECTION_STRING || "")
             .then(() => {
                 console.log("Connected to MongoDB");
             });
@@ -97,7 +105,7 @@ describe("handleSubscribe Function", () => {
 describe("handleUnsubscribe Function", () => {
     beforeAll(async () => {
         await mongoose
-            .connect("mongodb+srv://exdet:financebot@cluster0.zggrcsg.mongodb.net/?retryWrites=true&w=majority")
+            .connect(process.env.MONGO_CONNECTION_STRING|| "")
             .then(() => {
                 console.log("Connected to MongoDB");
             });
