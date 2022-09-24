@@ -5,6 +5,8 @@ export function toEnglish(data: { type: string; value: string }): any {
         switch (data.value) {
             case "AL":
                 return "Buy";
+            case "TUT":
+                return "Hold";
             case "SAT":
                 return "Sell";
             case "G.G":
