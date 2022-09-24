@@ -1,13 +1,14 @@
 import mongoose from "mongoose";
-import DiscordClient from "./discord";
-import Company from "./models/company.model";
-import { CompanyType, SubscriberType } from "./definitions/type.definitions";
-import { getCompanies } from "./utils/parser.utils";
-import { isNewSuggestion } from "./utils/notification.utils";
-import { getAllSubscribersOfCompany, updateCompany } from "./utils/db.utils";
-import { TextChannel } from "discord.js";
 import dotenv from "dotenv";
 dotenv.config();
+import DiscordClient from "./src/discord";
+import Company from "./src/models/company.model";
+import { CompanyType, SubscriberType } from "./src/definitions/type.definitions";
+import { getCompanies } from "./src/utils/parser.utils";
+import { isNewSuggestion } from "./src/utils/notification.utils";
+import { getAllSubscribersOfCompany, updateCompany } from "./src/utils/db.utils";
+import { TextChannel } from "discord.js";
+
 
 const MONGO_URI: string = process.env.MONGO_CONNECTION_STRING as string;
 

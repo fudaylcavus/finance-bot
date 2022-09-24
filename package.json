@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "ts-node-dev --respawn src/server.ts",
+    "dev": "ts-node-dev --respawn server.ts",
     "start": "node build/server.js",
-    "build": "tsc",
+    "build": "tsc --build",
     "test": "jest"
   },
   "author": "",

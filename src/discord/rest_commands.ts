@@ -4,9 +4,20 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 const { DC_TOKEN, DC_APP_ID, DEV_SERVER_ID } = process.env;
 import { Client, IntentsBitField } from "discord.js";
 
-if (!DC_TOKEN || !DC_APP_ID || !DEV_SERVER_ID) {
-    throw new Error("Missing environment variables!");
+//log not existing env variables, and throw error
+if (!DC_TOKEN) {
+    console.error("DC_TOKEN is not defined");
+    throw new Error("DC_TOKEN is not defined");
 }
+if (!DC_APP_ID) {
+    console.error("DC_APP_ID is not defined");
+    throw new Error("DC_APP_ID is not defined");
+}
+if (!DEV_SERVER_ID) {
+    console.error("DEV_SERVER_ID is not defined");
+    throw new Error("DEV_SERVER_ID is not defined");
+}
+
 
 
 export const client = new Client({
