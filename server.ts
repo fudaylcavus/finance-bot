@@ -8,9 +8,20 @@ import { getCompanies } from "./src/utils/parser.utils";
 import { isNewSuggestion } from "./src/utils/notification.utils";
 import { getAllSubscribersOfCompany, updateCompany } from "./src/utils/db.utils";
 import { TextChannel } from "discord.js";
+import { toCurrency } from "./src/utils/formatter.utils";
 
+const { DC_TOKEN, CONTROL_INTERVAL, MONGO_CONNECTION_STRING } = process.env;
+//if one of the env variables is not defined, throw error
+if (!DC_TOKEN) {
+    console.error("DC_TOKEN is not defined");
+    throw new Error("DC_TOKEN is not defined");
+}
+if (!MONGO_CONNECTION_STRING) {
+    console.error("MONGO_CONNECTION_STRING is not defined");
+    throw new Error("MONGO_CONNECTION_STRING is not defined");
+}
 
-const MONGO_URI: string = process.env.MONGO_CONNECTION_STRING as string;
+const MONGO_URI: string = MONGO_CONNECTION_STRING as string;
 
 mongoose
     .connect(MONGO_URI)
@@ -53,12 +64,41 @@ setInterval(async () => {
             for (const subscriber of subscribers) {
                 const channel = await DiscordClient.channels.fetch(subscriber.channelId);
                 if (channel instanceof TextChannel) {
-                    channel.send(`**${company.name}** hissesi için yeni öneri: ${company.suggestion}`);
+                    channel.send(`**${company.name}** hissesi için yeni öneri:`);
+                    channel.send({
+                        embeds: [
+                            {
+                                title: `${company.name} (${company.suggestion})`,
+                                description: `Market Value: ${toCurrency(company.marketValue)}`,
+                                fields: [
+                                    {
+                                        name: "Current Value",
+                                        value: `₺${toCurrency(company.currentValue)}`,
+                                        inline: true,
+                                    },
+                                    {
+                                        name: "Expected Value",
+                                        value: `₺${toCurrency(company.expectedValue)}`,
+                                        inline: true,
+                                    },
+                                    {
+                                        name: "Potential Income",
+                                        value: `${company.potentialIncome}%`,
+                                        inline: true,
+                                    },
+                                ],
+                                color: 0x00ff00,
+                                footer: {
+                                    text: `Suggestion Date: ${company.suggestionDate.toLocaleDateString("tr-TR")}`,
+                                },
+                            },
+                        ],
+                    });
                 }
             }
             updateCompany(company.name, company);
         }
     }
-}, 1000 * 60 * 60 * 24 * 7);
+}, Number(CONTROL_INTERVAL) || 604800000);
 
-DiscordClient.login(process.env.DC_TOKEN);
+DiscordClient.login(DC_TOKEN);

@@ -1,5 +1,20 @@
 import { Types } from "mongoose";
 
+export function toEnglish(data: { type: string; value: string }): any {
+    if (data.type === "suggestion") {
+        switch (data.value) {
+            case "AL":
+                return "Buy";
+            case "SAT":
+                return "Sell";
+            case "G.G":
+                return "Watch";
+            default:
+                return "Watch";
+        }
+    }
+}
+
 export function toDate(date: string): Date {
     const [day, month, year] = date.split(".");
     return new Date(`${month}/${day}/${year}`);

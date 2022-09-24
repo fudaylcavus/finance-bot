@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import cheerio from "cheerio";
 import { CompanyType } from "../definitions/type.definitions";
-import { toNumber, toDate } from "./formatter.utils";
+import { toNumber, toDate, toEnglish } from "./formatter.utils";
 
 const URL = "https://www.isyatirim.com.tr/tr-tr/analiz/hisse/Sayfalar/takip-listesi.aspx";
 
@@ -21,7 +21,7 @@ function getCompaniesByHtmlContent(htmlContent: string): CompanyType[] {
     $('table[data-csvname="takipozet"] tbody tr').each(function (i, elm) {
         const company: CompanyType = {
             name: $(this).children("td").eq(0).text(),
-            suggestion: $(this).children("td").eq(1).text(),
+            suggestion: toEnglish({type: 'suggestion', value: $(this).children("td").eq(1).text()}),
             expectedValue: toNumber($(this).children("td").eq(2).text()),
             potentialIncome: toNumber($(this).children("td").eq(3).text()),
             suggestionDate: toDate($(this).children("td").eq(4).text()),
