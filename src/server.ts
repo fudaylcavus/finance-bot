@@ -45,7 +45,7 @@ mongoose
 //check every week, if suggestion date of any company is changed
 //then send message to all subscribers of that company
 setInterval(async () => {
-    const newData = await getCompanies()
+    const newData = await getCompanies();
     for (const company of newData) {
         if (await isNewSuggestion(company.name, newData)) {
             const subscribers = await getAllSubscribersOfCompany(company.name);
@@ -58,9 +58,6 @@ setInterval(async () => {
             updateCompany(company.name, company);
         }
     }
-
 }, 1000 * 60 * 60 * 24 * 7);
-
-
 
 DiscordClient.login(process.env.DC_TOKEN);

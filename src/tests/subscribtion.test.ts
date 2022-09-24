@@ -40,6 +40,7 @@ describe("handleSubscribe Function", () => {
             expect(subscriber).not.toBeNull();
             if (subscriber) {
                 //subscribedCompany is correct
+                console.log(subscriber.subscribedCompanies);
                 expect(subscriber.subscribedCompanies).toContainEqual(expect.objectContaining({ name: "ASELS" }));
             }
         }

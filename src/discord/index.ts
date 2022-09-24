@@ -1,6 +1,4 @@
-import { ChatInputCommandInteraction, TextChannel } from "discord.js";
 import { CompanyType, SubscriberInteraction } from "../definitions/type.definitions";
-import Subscriber from "../models/subscriber.model";
 import { handleUnsubscribe, handleSubscribe, getCompany } from "../utils/db.utils";
 import { toCurrency } from "../utils/formatter.utils";
 import { client } from "./rest_commands";

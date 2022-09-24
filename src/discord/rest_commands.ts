@@ -1,8 +1,13 @@
 import { REST } from "@discordjs/rest";
 import { Routes } from "discord-api-types/v9";
 import { SlashCommandBuilder } from "@discordjs/builders";
-const { DC_TOKEN, DC_APP_ID } = process.env;
+const { DC_TOKEN, DC_APP_ID, DEV_SERVER_ID } = process.env;
 import { Client, IntentsBitField } from "discord.js";
+
+if (!DC_TOKEN || !DC_APP_ID || !DEV_SERVER_ID) {
+    throw new Error("Missing environment variables!");
+}
+
 
 export const client = new Client({
     intents: [IntentsBitField.Flags.Guilds, IntentsBitField.Flags.GuildMessages],
@@ -31,15 +36,15 @@ const unsubCommand = new SlashCommandBuilder()
 
 const commands = [getStockInfoCommand.toJSON(), subscribeCommand.toJSON(), unsubCommand.toJSON()];
 
-const rest = new REST({ version: "9" }).setToken("NzY4OTMzNTkxOTcxMjY2NTgw.G4CVEL.voyuEKoI30wVf-uC4sI20OTIswzvl-HaFy9JKY");
+const rest = new REST({ version: "9" }).setToken(DC_TOKEN);
 
 (async () => {
     try {
         console.log("Started refreshing application (/) commands.");
 
-        await rest.put(Routes.applicationGuildCommands("768933591971266580", "331355173131911168"), { body: commands });
+        await rest.put(Routes.applicationGuildCommands(DC_APP_ID, DEV_SERVER_ID), { body: commands });
 
-        await rest.put(Routes.applicationCommands("768933591971266580"), {
+        await rest.put(Routes.applicationCommands(DC_APP_ID), {
             body: commands,
         });
 
