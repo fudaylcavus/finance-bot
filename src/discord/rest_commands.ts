@@ -53,7 +53,8 @@ const rest = new REST({ version: "9" }).setToken(DC_TOKEN);
     try {
         console.log("Started refreshing application (/) commands.");
 
-        await rest.put(Routes.applicationGuildCommands(DC_APP_ID, DEV_SERVER_ID), { body: commands });
+        if (process.env.NODE_ENV === "development") 
+            await rest.put(Routes.applicationGuildCommands(DC_APP_ID, DEV_SERVER_ID), { body: commands });
 
         await rest.put(Routes.applicationCommands(DC_APP_ID), {
             body: commands,
