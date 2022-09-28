@@ -96,8 +96,8 @@ setInterval(async () => {
                     });
                 }
             }
-            updateCompany(company.name, company);
         }
+        updateCompany(company.name, company);
     }
 }, Number(CONTROL_INTERVAL) || 604800000);
 

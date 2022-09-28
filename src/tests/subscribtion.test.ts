@@ -16,9 +16,9 @@ describe("handleSubscribe Function", () => {
     beforeAll(async () => {
         await mongoose
             .connect(process.env.MONGO_CONNECTION_STRING || "")
-            .then(() => {
-                console.log("Connected to MongoDB");
-            });
+            .catch((err) => {
+                console.error(err);
+            })
     });
 
     afterAll(async () => {
@@ -47,8 +47,6 @@ describe("handleSubscribe Function", () => {
             );
             expect(subscriber).not.toBeNull();
             if (subscriber) {
-                //subscribedCompany is correct
-                console.log(subscriber.subscribedCompanies);
                 expect(subscriber.subscribedCompanies).toContainEqual(expect.objectContaining({ name: "ASELS" }));
             }
         }
@@ -106,9 +104,9 @@ describe("handleUnsubscribe Function", () => {
     beforeAll(async () => {
         await mongoose
             .connect(process.env.MONGO_CONNECTION_STRING|| "")
-            .then(() => {
-                console.log("Connected to MongoDB");
-            });
+            .catch((err) => {
+                console.error(err);
+            })
     });
 
     afterAll(async () => {
