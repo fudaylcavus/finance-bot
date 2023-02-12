@@ -14,6 +14,7 @@ Take look at the codes
 
 #### Application in action
 ![Screenshot 2022-09-24 212848](https://user-images.githubusercontent.com/23340400/192147217-a12e191d-1384-46c9-9933-8ca0ca25d5a4.png)
+![finance_bot_2](https://user-images.githubusercontent.com/23340400/218318043-8abf3188-1bf2-461e-92c8-83ac8cb6728e.png)
 
 
 #### What's next
