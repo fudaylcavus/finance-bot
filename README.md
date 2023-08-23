@@ -13,7 +13,7 @@ Take look at the codes
 * cheerio (for html scraping)
 
 #### Application in action
-![Screenshot 2022-09-24 212848](https://user-images.githubusercontent.com/23340400/192147217-a12e191d-1384-46c9-9933-8ca0ca25d5a4.png)
+![combined_finance_bot](https://user-images.githubusercontent.com/23340400/218318132-7e8699c4-a5ed-443f-b362-3e1cc64e2a0f.png)
 
 
 #### What's next
