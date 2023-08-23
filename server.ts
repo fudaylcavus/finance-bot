@@ -10,6 +10,8 @@ import { getAllSubscribersOfCompany, updateCompany } from "./src/utils/db.utils"
 import { TextChannel } from "discord.js";
 import { toCurrency } from "./src/utils/formatter.utils";
 
+export let MEM_COMPANY_LIST: string[];
+
 const { DC_TOKEN, CONTROL_INTERVAL, MONGO_CONNECTION_STRING } = process.env;
 //if one of the env variables is not defined, throw error
 if (!DC_TOKEN) {
@@ -54,15 +56,22 @@ mongoose
         console.error("Error while connecting to MongoDB:", error.message);
     });
 
-//check every week, if suggestion date of any company is changed
-//then send message to all subscribers of that company
-setInterval(async () => {
+export const mainControlFunction = async () => {
     const newData = await getCompanies();
+    MEM_COMPANY_LIST = newData.map((company) => company.name);
+
     for (const company of newData) {
         if (await isNewSuggestion(company.name, newData)) {
             const subscribers = await getAllSubscribersOfCompany(company.name);
             for (const subscriber of subscribers) {
-                const channel = await DiscordClient.channels.fetch(subscriber.channelId);
+                let channel;
+                try {
+                    channel = await DiscordClient.channels.fetch(subscriber.channelId);
+                } catch (err) {
+                    console.log(`${subscriber.guildName} > ${subscriber.channelName} is currently unavailable.`);
+                    continue;
+                }
+
                 if (channel instanceof TextChannel) {
                     channel.send(`**${company.name}** hissesi için yeni öneri:`);
                     channel.send({
@@ -99,6 +108,11 @@ setInterval(async () => {
         }
         updateCompany(company.name, company);
     }
-}, Number(CONTROL_INTERVAL) || 604800000);
+};
+
+//check every week, if suggestion date of any company is changed
+//then send message to all subscribers of that company
+mainControlFunction();
+setInterval(mainControlFunction, Number(CONTROL_INTERVAL) || 604800000);
 
 DiscordClient.login(DC_TOKEN);

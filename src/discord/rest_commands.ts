@@ -18,8 +18,6 @@ if (!DEV_SERVER_ID) {
     throw new Error("DEV_SERVER_ID is not defined");
 }
 
-
-
 export const client = new Client({
     intents: [IntentsBitField.Flags.Guilds, IntentsBitField.Flags.GuildMessages],
 });
@@ -45,7 +43,12 @@ const unsubCommand = new SlashCommandBuilder()
         option.setName("company_name").setDescription("Company name to subscribe stock info?").setRequired(true)
     );
 
-const commands = [getStockInfoCommand.toJSON(), subscribeCommand.toJSON(), unsubCommand.toJSON()];
+const refreshData = new SlashCommandBuilder()
+    .setName("refresh-data")
+    .setDescription("Refresh data from isyatirim.com.tr")
+    .setDefaultMemberPermissions(0x0000000000000008)
+
+const commands = [getStockInfoCommand.toJSON(), subscribeCommand.toJSON(), unsubCommand.toJSON(), refreshData.toJSON()];
 
 const rest = new REST({ version: "9" }).setToken(DC_TOKEN);
 
@@ -53,7 +56,7 @@ const rest = new REST({ version: "9" }).setToken(DC_TOKEN);
     try {
         console.log("Started refreshing application (/) commands.");
 
-        if (process.env.NODE_ENV === "development") 
+        if (process.env.NODE_ENV === "development")
             await rest.put(Routes.applicationGuildCommands(DC_APP_ID, DEV_SERVER_ID), { body: commands });
 
         await rest.put(Routes.applicationCommands(DC_APP_ID), {

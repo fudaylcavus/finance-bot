@@ -6,7 +6,14 @@ export async function isNewSuggestion(companyName: string, companiesData: Compan
     //if it has, return true
     //else return false
     const newCompanyData = companiesData.find((company) => company.name === companyName);
-    const currentCompanyData = await Company.findOne({ name: companyName });
+
+    let currentCompanyData: CompanyType | null = null;
+    try {
+        currentCompanyData = await Company.findOne({ name: companyName });
+    } catch (err) {
+        console.log('unknown company', companyName)
+    }
+    
 
     if (newCompanyData && currentCompanyData) {
         if (newCompanyData.suggestionDate.getTime() !== currentCompanyData.suggestionDate.getTime()) {

@@ -6,9 +6,9 @@ import { CompanyType, SubscriberInteraction, SubscriberType } from "../definitio
 import { CacheType, ChatInputCommandInteraction, TextChannel } from "discord.js";
 
 export const handleSubscribe = async (interaction: SubscriberInteraction, companyName: string) => {
-    const requestedCompany = await Company.findOne({ name: companyName });
+    const requestedCompany = await Company.findOne({ name: companyName.toUpperCase() });
     if (!requestedCompany) {
-        throw new CompanyNotFoundError("Company not found!");
+        throw new CompanyNotFoundError(`Company ${companyName} not found!`);
     }
 
     const subscriber = await Subscriber.findOne({ channelId: interaction.channelId });
@@ -37,9 +37,9 @@ export const handleSubscribe = async (interaction: SubscriberInteraction, compan
 };
 
 export const handleUnsubscribe = async (interaction: SubscriberInteraction, companyName: string) => {
-    const requestedCompany = await Company.findOne({ name: companyName });
+    const requestedCompany = await Company.findOne({ name: companyName.toUpperCase() });
     if (!requestedCompany) {
-        throw new CompanyNotFoundError("Company not found!");
+        throw new CompanyNotFoundError(`Company ${companyName} not found!`);
     }
 
     const subscriber = await Subscriber.findOne({ channelId: interaction.channelId });
@@ -57,18 +57,18 @@ export const handleUnsubscribe = async (interaction: SubscriberInteraction, comp
 };
 
 export const getCompany = async (companyName: string) => {
-    const requestedCompany = await Company.findOne({ name: companyName });
+    const requestedCompany = await Company.findOne({ name: companyName.toUpperCase() });
     if (!requestedCompany) {
-        throw new CompanyNotFoundError("Company not found!");
+        throw new CompanyNotFoundError(`Company ${companyName} not found!`);
     } else {
         return requestedCompany;
     }
 };
 
 export const getAllSubscribersOfCompany = async (companyName: string) => {
-    const requestedCompany = await Company.findOne({ name: companyName });
+    const requestedCompany = await Company.findOne({ name: companyName.toUpperCase() });
     if (!requestedCompany) {
-        throw new CompanyNotFoundError("Company not found!");
+        throw new CompanyNotFoundError(`Company ${companyName} not found!`);
     } else {
         const subscribers = await Subscriber.find({ subscribedCompanies: { $in: requestedCompany._id } });
         return subscribers;
@@ -77,9 +77,9 @@ export const getAllSubscribersOfCompany = async (companyName: string) => {
 
 //update company
 export const updateCompany = async (companyName: string, companyData: CompanyType) => {
-    const requestedCompany = await Company.findOne({ name: companyName });
+    const requestedCompany = await Company.findOne({ name: companyName.toUpperCase() });
     if (!requestedCompany) {
-        throw new CompanyNotFoundError("Company not found!");
+        return await createCompany(companyName, companyData);
     } else {
         requestedCompany.suggestion = companyData.suggestion;
         requestedCompany.currentValue = companyData.currentValue;
@@ -90,4 +90,18 @@ export const updateCompany = async (companyName: string, companyData: CompanyTyp
         await requestedCompany.save();
         return requestedCompany;
     }
+};
+
+const createCompany = async (companyName: string, companyData: CompanyType) => {
+    const newCompany = new Company({
+        name: companyName,
+        suggestion: companyData.suggestion,
+        currentValue: companyData.currentValue,
+        suggestionDate: companyData.suggestionDate,
+        expectedValue: companyData.expectedValue,
+        potentialIncome: companyData.potentialIncome,
+        marketValue: companyData.marketValue,
+    });
+    await newCompany.save();
+    return newCompany;
 };

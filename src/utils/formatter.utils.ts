@@ -28,7 +28,6 @@ export function toNumber(amount: string): number {
 }
 
 export function toCurrency(amount: number): string {
-    console.log(amount);
     let amountString = amount.toString();
     let amountArray = amountString.split(".");
     let amountInteger = amountArray[0];
